@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Event Sourcing: Towards Clarity</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <!-- Shower Theme -->
+    <link rel="stylesheet" href="vendors/shower-ribbon/styles/screen-16x10.css" />
+    <link rel="stylesheet" href="vendors/shower-warsawjs/styles/main.css" />
+
+    <!-- Prism.js -->
+    <link rel="stylesheet" href="vendors/prism/prism.css" />
+    <link rel="stylesheet" href="vendors/prism/custom-prism.css" />
+    
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="vendors/highlight.js/default.min.css" />
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="custom/style.css" />
+</head>
+<body class="shower list">
+    <header class="caption">
+        <h1>Event Sourcing: Towards Clarity</h1>
+        <p>How Event Sourcing helps developers cut through software complexity.</p>
+    </header>
+
+    <section class="slide front-page">
+        <div class="logo">
+            <!-- Logo WarsawJS -->
+            <img src="pictures/logo/warsawjs-logo-light.png">
+        </div>
+        <div class="details">
+            <!-- 1. Avatar -->
+            <!-- TODO: Actual photo -->
+            <img src="pictures/fake-speaker-avatar.jpg" alt="Speaker"/>
+
+            <!-- 2. Speaker -->
+            <h2>Robert Kawecki</h2>
+
+            <!-- 3. Presentation title -->
+            <h2><strong>"Event Sourcing: Towards Clarity"</strong></h2>
+
+            <!-- 4. Presentation date -->
+            <h2>2016-04-13</h2>
+
+            <!-- 5. Contact the speaker -->
+            <h2><a href="https://github.com/rkaw92">github.com/rkaw92</a></h2>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Event Sourcing</h2>
+        <ul>
+            <li>Domain Events as state medium</li>
+            <li>Capturing intent</li>
+            <li>Append-only DB</li>
+        </ul>
+        <img src="pictures/EventStore.svg" />
+    </section>
+
+    <section class="slide">
+		<h2>Building applications</h2>
+		<p class="slogan">application = state + behavior</p>
+    </section>
+    
+    <section class="slide">
+        <h2>State mutation</h2>
+        <ul>
+			<!-- Result of events: pure functions that depend on previous state and input -->
+            <li>Only a result of events</li>
+            <!-- Deterministic: entirely reproducible and 100% testable -->
+            <li>Deterministic</li>
+            <!-- In-memory: it is possible to pre-apply the changes before committing -->
+            <li>In-memory</li>
+        </ul>
+        <pre class="code-sample wide lang-js"><code>onAuctionOfferPlaced(event) {
+	var placedOffer = Offer.unflatten(event.eventPayload.offer);
+	this._offers.push(placedOffer);
+}</code></pre>
+    </section>
+    
+    <section class="slide">
+		<h2>Implementing behavior</h2>
+		<ul>
+			<!-- DDD to the rescue - entities as Aggregate Roots with IDs -->
+			<li>Domain-Driven Design</li>
+			<!-- May throw errors, use private state as usual, expose public API -->
+			<!-- You *know* this -->
+			<li>Plain old OOP</li>
+			<!-- No conditionals in handlers - decisions need to be set in stone and saved as events; otherwise, reconstructing state becomes impossible -->
+			<li>Logic in methods</li>
+			<!-- TODO: Example method that emits events -->
+		</ul>
+    </section>
+    
+    <section class="slide">
+		<h2>Putting it together</h2>
+		<ul>
+			<!-- Difference from non-ES apps which use custom repository types per entity type -->
+			<li>Single event repository</li>
+			<!-- An optional set of functions that operate on Event Sourced Aggregate Roots -->
+			<li>Service layer</li>
+			<!-- A place for users to get data from - also called the Reporting Store -->
+			<li>Read side</li>
+			<!-- TODO: Example service which loads an Aggregate Root and calls its method -->
+		</ul>
+    </section>
+    
+    <section class="slide">
+		<h2>Read side: CQRS</h2>
+		<ul>
+			<li>Denormalized</li>
+			<li>Replicated</li>
+			<li>Asynchronous</li>
+			<!-- TODO: Architectural diagram with an Event Store and a Reporting Store -->
+		</ul>
+    </section>
+    
+    <section class="slide">
+		<h2>Pub-Sub</h2>
+		<ul>
+			<!-- Background processes are implemented as subscribers -->
+			<li>Automation</li>
+			<!-- Most systems are built on their own first, with integration capabilities added later -->
+			<li>Integration by default</li>
+			<li>Messaging format</li>
+			<!-- TODO: Event JSON example -->
+		</ul>
+    </section>
+    
+    <section class="slide">
+		<h2>Advantages</h2>
+		<ul>
+			<!-- Entities and services are built in a standard way and communicate via a public "event" protocol -->
+			<li>Isomorphism</li>
+			<!-- Logic is not buried in the database -->
+			<li>Logic in plain sight</li>
+			<!-- Reproducing a given state of the system is easy -->
+			<li>Traceability</li>
+			<!-- ES perfectly suited for work queues -->
+			<li>Scalability</li>
+		</ul>
+    </section>
+   
+   
+
+    <div class="progress"></div>
+
+    <footer class="badge">
+        <a href="https://github.com/warsawjs/warsawjs-slides-template">Fork me on GitHub</a>
+    </footer>
+
+    <footer class="badge badge-down">
+        <a href="#" class="fullscreen">Fullscreen</a>
+    </footer>
+
+    <script src="vendors/gamepad/gamepad.js"></script>
+    <script src="vendors/shower/shower.min.js"></script>
+    <script src="vendors/shower-gamepad/shower.gamepad.js"></script>
+    <script src="modules/fullscreen.js"></script>
+
+    <!-- Prism.js -->
+    <script src="vendors/prism/prism.js"></script>
+    <script src="vendors/prism/custom-prism.js"></script>
+    
+    <!-- Highlight.js -->
+    <script src="vendors/highlight.js/highlight.min.js"></script>
+    <script>
+		hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
