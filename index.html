@@ -21,7 +21,7 @@
     <!-- Custom styles -->
     <link rel="stylesheet" href="custom/style.css" />
 </head>
-<body class="shower list">
+<body class="shower list higher">
     <header class="caption">
         <h1>Event Sourcing: Towards Clarity</h1>
         <p>How Event Sourcing helps developers cut through software complexity.</p>
@@ -94,6 +94,14 @@
 			<li>Logic in methods</li>
 			<!-- TODO: Example method that emits events -->
 		</ul>
+		<pre class="code-sample wide lang-js"><code>placeOffer(buyer, amount, date) {
+	var offer = new Offer(buyer, amount, date);
+	if (!this._opened) {
+		throw new Error('The auction is not open for offers at this time');
+	}
+	
+	this._stageEvent(new Event('AuctionOfferPlaced', { offer }));
+}</code></pre>
     </section>
     
     <section class="slide">
@@ -105,7 +113,12 @@
 			<li>Service layer</li>
 			<!-- A place for users to get data from - also called the Reporting Store -->
 			<li>Read side</li>
-			<!-- TODO: Example service which loads an Aggregate Root and calls its method -->
+			<pre class="code-sample wide lang-js"><code>var Auction = require('../Entities/Auction');
+module.exports = function openAuction(params) {
+	return repository.invoke(Auction, params.ID, function(instance) {
+		instance.placeOffer(params.buyer, params.amount, new Date());
+	});
+};</code></pre>
 		</ul>
     </section>
     
@@ -116,6 +129,8 @@
 			<li>Replicated</li>
 			<li>Asynchronous</li>
 			<!-- TODO: Architectural diagram with an Event Store and a Reporting Store -->
+			<img src="pictures/CQRS.svg" />
+			
 		</ul>
     </section>
     
@@ -128,6 +143,14 @@
 			<li>Integration by default</li>
 			<li>Messaging format</li>
 			<!-- TODO: Event JSON example -->
+			<pre class="code-sample wide lang-js"><code>event: {
+	eventType: 'AuctionOfferPlaced',
+	eventPayload: { offer: { ... } }
+}, commit: {
+	sequenceID: '75525f22-381e-421b-8b9c-1f4623a32d56',
+	sequenceSlot: 4,
+	aggregateType: 'Auction'
+}</code></pre>
 		</ul>
     </section>
     
@@ -142,6 +165,14 @@
 			<li>Traceability</li>
 			<!-- ES perfectly suited for work queues -->
 			<li>Scalability</li>
+		</ul>
+    </section>
+    
+     <section class="slide">
+		<h2>Sources</h2>
+		<ul>
+			<li><a href="https://github.com/rkaw92/esdf">https://github.com/rkaw92/esdf</a></li>
+			<li><a href="https://github.com/rkaw92/meet-reliability-auctions">https://github.com/rkaw92/meet-reliability-auctions</a></li>
 		</ul>
     </section>
    
