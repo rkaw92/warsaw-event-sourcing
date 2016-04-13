@@ -94,8 +94,11 @@
 			<li>Plain old OOP</li>
 			<!-- No conditionals in handlers - decisions need to be set in stone and saved as events; otherwise, reconstructing state becomes impossible -->
 			<li>Logic in methods</li>
-			<!-- TODO: Example method that emits events -->
 		</ul>
+    </section>
+    
+    <section class="slide">
+		<h2>Implementing behavior: code</h2>
 		<pre class="code-sample wide lang-js"><code>placeOffer(buyer, amount, date) {
 	var offer = new Offer(buyer, amount, date);
 	if (!this._opened) {
@@ -158,7 +161,7 @@ module.exports = function openAuction(params) {
     
     <section class="slide">
 		<h2>Advantages</h2>
-		<ul>
+		<ul style="font-size: 125%">
 			<!-- Entities and services are built in a standard way and communicate via a public "event" protocol -->
 			<li>Isomorphism</li>
 			<!-- Logic is not buried in the database -->
@@ -175,7 +178,10 @@ module.exports = function openAuction(params) {
 		<ul>
 			<li><a href="https://github.com/rkaw92/esdf">https://github.com/rkaw92/esdf</a></li>
 			<li><a href="https://github.com/rkaw92/meet-reliability-auctions">https://github.com/rkaw92/meet-reliability-auctions</a></li>
+			<li>...and anything <em>you</em> create!</li>
 		</ul>
+		
+		<p>Thanks!</p>
     </section>
    
    
